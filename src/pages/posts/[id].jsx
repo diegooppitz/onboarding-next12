@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
-import { Container, Paper, Typography, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import { Card } from "@ui-propulsion/react-components";
 
-export const getServerSideProps = (context) => {
+export const getServerSideProps = async (context) => {
   const { id } = context.params;
 
-  const post = { id, title: `Post ${id}`, content: 'Lorem ipsum dolor sit amet...' };
+  const res = await fetch(`http://localhost:4000/api/posts/${id}`);
+  const post = await res.json();
 
   return {
     props: { post },
@@ -16,23 +18,21 @@ const Post = ({ post }) => {
 
   if (router.isFallback) {
     return (
-      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Card className="card-center">
         <CircularProgress />
-      </Container>
+      </Card>
     );
   }
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+      <Card>
+        <div className='p-title'>
           {post.title}
-        </Typography>
-        <Typography variant="body1">
-          {post.content}
-        </Typography>
-      </Paper>
-    </Container>
+        </div>
+        <p className='p-body'>
+          {post.body}
+        </p>
+      </Card>
   );
 }
 

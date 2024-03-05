@@ -1,0 +1,40 @@
+@import '~@ui-propulsion/toolkit/tools';
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.project-container {
+    margin-top: 25px;
+}
+
+.p-title {
+    @include font('title-1');
+    margin-bottom: 10px;
+}
+
+.p-title-2 {
+    @include font('title-1');
+    margin-bottom: 10px;
+}
+
+.p-body {
+    @include font('body');
+    margin-bottom: 10px;
+}
+
+.card-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.post-link {
+    text-decoration: none;
+    color: $pds-color-sapphire-700;
+}

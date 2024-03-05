@@ -1,39 +1,34 @@
 import Link from 'next/link';
-import { Container, Paper, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Grid, Card } from "@ui-propulsion/react-components";
 
 export const getServerSideProps = async () => {
-  const res = await fetch(`http://localhost:3000/api/posts`);
+  const res = await fetch(`http://localhost:4000/api/posts`);
   const posts = await res.json();
+  const limitedPosts = posts.slice(0, 10);
 
   return {
-    props: { posts },
+    props: { posts: limitedPosts },
   };
 };
 
 const Posts = ({ posts }) => {
+  console.log("posts", posts)
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Posts
-        </Typography>
-        <List>
-          {posts.map((post) => (
-            <ListItem key={post.id} component="div" disablePadding>
-              <ListItemText
-                primary={
-                  <Link href={`/posts/${post.id}`} passHref>
-                    <Typography variant="body1" component="a" sx={{ textDecoration: 'none', color: 'inherit', '&:hover': { textDecoration: 'underline' } }}>
-                      {post.title}
-                    </Typography>
-                  </Link>
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Paper>
-    </Container>
+    <Card>
+      <Grid spacing={2} container>
+        <Grid item xs={12}>
+          <h1>Posts</h1>
+        </Grid>
+
+        {posts.map((post, index) => (
+          <Grid xs={12} key={index} item>
+            <Link href={`/posts/${post.id}`} passHref>
+              <a className='p-body post-link'>{post.title}</a>
+            </Link>
+          </Grid>
+        ))}
+      </Grid>
+    </Card>
   );
 };
 

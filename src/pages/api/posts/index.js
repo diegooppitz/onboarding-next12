@@ -1,8 +1,18 @@
-const handler = (req, res) => {
-    res.status(200).json([
-        { id: '1', title: 'Post 1', content: 'Post 1 content' },
-        { id: '2', title: 'Post 2', content: 'Post 2 content' },
-    ]);
-}
+const postsHandler = (req, res) => {
+    if (req.method !== 'GET') {
+      res.setHeader('Allow', ['GET']);
+      return res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+  
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then(posts => {
+        res.status(200).json(posts);
+      })
+      .catch(error => {
+        console.error('Error on search the posts:', error);
+        res.status(500).json({ error: "Error fetching posts" });
+      });
+  };
 
-export default handler
+export default postsHandler;
